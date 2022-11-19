@@ -1,0 +1,152 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+/* .App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+} */
+
+/* .App-link {
+  color: #61dafb;
+} */
+.App-logo {
+    animation: App-logo-spin infinite 10s linear;
+    height: 2vmin;
+    pointer-events: none;
+}
+#logo-react {
+  fill: red!important;
+}
+/* GLONALS */
+@font-face {
+font-family: "Noto Sans TC";
+src: url(./fonts/NotoSansTC/NotoSansTC-Black.otf);
+src: url(./fonts/NotoSansTC/NotoSansTC-Bold.otf);
+src: url(./fonts/NotoSansTC/NotoSansTC-Light.otf);
+src: url(./fonts/NotoSansTC/NotoSansTC-Medium.otf);
+src: url(./fonts/NotoSansTC/NotoSansTC-Regular.otf);
+src: url(./fonts/NotoSansTC/NotoSansTC-Thin.otf);
+}
+@font-face {
+font-family: "Monoton";
+src: url(./fonts/Monoton/Monoton-Regular.ttf);
+}
+@font-face {
+font-family: "Russo_One";
+src: url(./fonts/Russo_One/RussoOne-Regular.ttf);
+}
+html,body{
+  margin: 0px!important;
+  padding: 0px!important;
+  font-family: 'Noto Sans TC', sans-serif!important;
+}
+html{
+  background: rgba(221, 29, 61, 0.675);  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #F4E2D8, rgba(226, 0, 38, 0.675));  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #F4E2D8, rgba(226, 0, 38, 0.675)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+body{
+  background-color: transparent;
+  background-image: url(./mapfre.svg)!important;
+  background-size: 26% 26%;
+  background-repeat: repeat;
+  background-blend-mode: color-burn;
+  min-height: 100vh!important;
+}
+.nomargin{
+  margin: 0!important;
+}
+/* SIDEBAR */
+body {
+  overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+  width: 15rem;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}
+/* NAVBAR STYLES */
+.navbar {
+  background-color: #E20025;
+  /* display: block; */
+}
+.med-screen{
+  width: 75vw;
+  color: #E20025!important;
+}
+nav a{
+    color: #fff!important;
+    font-family: 'Russo_One';
+    font-weight: 400;
+}
+#hora{
+  font-size: .8rem!important;
+}
+
+/* @keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+a.text-dark:focus, a.text-dark:hover,
+a.text-light:focus, a.text-light:hover {
+  color: #ffc107!important;
+  text-decoration: none;
+}
+.badge-nav{
+  background-color: white;
+  padding: 0.5em;
+  border-radius: 5px;
+}
