@@ -1,23 +1,25 @@
 import React, {Component} from 'react';
 import logo from './mapfre-logo.svg'
 import './App.css';
+import NavSelector from './componentes/NavSelector';
 
 // import { todos } from './todos.json';
 
 import TodoForm from './componentes/TodoForm'
 
-const json_import = require('./todos.json')
-const todos = json_import.todos;
+// const json_import = require('./todos.json')
+// const todos = json_import.todos;
 let date = new Date();
 const weekday = new Array(7);
-weekday[0] = "Lunes";
-weekday[1] = "Martes";
-weekday[2] = "Miercoes";
-weekday[3] = "Jueves";
-weekday[4] = "Viernes";
-weekday[5] = "Sábado";
-weekday[6] = "Domingo";
-let wd = weekday[(date.getDay() - 1)];
+weekday[0] = "Domingo";
+weekday[1] = "Lunes";
+weekday[2] = "Martes";
+weekday[3] = "Miercoes";
+weekday[4] = "Jueves";
+weekday[5] = "Viernes";
+weekday[6] = "Sábado";
+
+let wd = weekday[(date.getDay())];
 
 let month = new Array(12);
 month[0] = "Ener";
@@ -37,13 +39,14 @@ let mth = month[date.getMonth()];
 let yr = date.getFullYear();
 let dn = date.getUTCDate();
 
-var fecha = wd + ", " + dn + " de " + mth + " de " + yr;
+let fecha = wd + ", " + dn + " de " + mth + " de " + yr;
 
 export default class App extends Component {
     constructor(props) {
         super();
         this.state = {
-            todos,
+            stored: JSON.parse(localStorage.getItem('@tareas-mapfreapp')),
+            todos: [],
             fecha
         }
         this.handleAddTodo = this.handleAddTodo.bind(this);
@@ -51,39 +54,93 @@ export default class App extends Component {
 
     handleRemoveTodo(index) {
         if (window.confirm("Está seguro de eliminar?")) {
+            let todos = JSON.parse(localStorage.getItem('@tareas-mapfreapp')).filter((e, i) => i !== index);
+            localStorage.setItem('@tareas-mapfreapp', JSON.stringify(todos))
             this.setState({
-                todos: this.state.todos.filter((e, i) => {
-                    return i !== index
-                })
+                stored: todos
+            })
+            let selected = this.state.todos.filter((e, i) => i !== index);
+            this.setState({
+                todos: selected
             })
         }
     }
 
+
     handleAddTodo(todo) {
+        const storage = JSON.parse(localStorage.getItem('@tareas-mapfreapp'))
+        localStorage.setItem('@tareas-mapfreapp', JSON.stringify([...storage, todo]));
         this.setState({
-            todos: [...this.state.todos, todo]
+            stored: [...storage, todo]
+        })
+        this.setState({
+            todos: [...storage, todo]
         })
     }
 
+    handleSelected(type) {
+        switch (type) {
+            case 'Baja':
+                this.setState({
+                    todos: this.state.stored.filter(i => i.priority === 'Baja')
+                });
+                break;
+            case 'Media':
+                this.setState({
+                    todos: this.state.stored.filter(i => i.priority === 'Media')
+                });
+                break;
+            case 'Alta':
+                this.setState({
+                    todos: this.state.stored.filter(i => i.priority === 'Alta')
+                })
+                break;
+            case 'Todas':
+                this.setState({
+                    todos: [...this.state.stored]
+                })
+                break;
+            default:
+                this.setState({
+                    todos: [...this.state.stored]
+                })
+        }
+    }
+
     componentDidMount() {
-        const local = localStorage.getItem('tareas');
-        if(!local){
-            console.log('no local')
-            localStorage.setItem('tareas')
+        console.log((date.getDay() ))
+        if (!this.state.stored) {
+            localStorage.setItem('@tareas-mapfreapp', JSON.stringify([]));
+        } else {
+            this.setState({
+                todos: [...this.state.stored]
+            })
+        }
+    }
+
+    handlerColorBadge(type) {
+        switch (type) {
+            case 'Baja':
+                return ' badge-info'
+            case 'Media':
+                return ' badge-warning'
+            case 'Alta':
+                return ' badge-danger'
+            default:
+                return ' badge-warning'
         }
     }
 
     render() {
-
         const todose = this.state.todos.map((todo, i) => {
             return (
-                <div key={i} className="col-md-4">
+                <div key={i} className="col-sm-12 col-md-6 col-lg-4">
                     <div className="card mt-4">
                         <div className="card-header">
                             <h3>
                                 {todo.title}
                             </h3>
-                            <span className="badge badge-pill badge-danger ml-2">
+                            <span className={["badge badge-pill ml-2", this.handlerColorBadge(todo.priority)]}>
                 {todo.priority}
               </span>
                         </div>
@@ -113,28 +170,53 @@ export default class App extends Component {
                 <nav className="navbar navbar-dark">
                     <img src={logo} className="App-logo image-fluid float-left" alt="logo"/>
                     <div className="med-screen">
-                        <a href="#!" onClick={() => alert('BAJA')} className="text-light m-3">
-                            P. BAJA
-                        </a>
-                        <a href="#!" className="text-light m-3">
-                            P. MEDIA
-                        </a>
-                        <a href="#!" className="text-light m-3">
-                            P. ALTA
-                        </a>
-                        <a href="#!" className="text-dark badge-nav m-3">
-                            TODAS
-                        </a>
+                        <NavSelector
+                            _href={'#!'}
+                            onclick={() => this.handleSelected('Baja')}
+                            text={'P. BAJA'}
+                            classname={"text-light m-3"}
+                            _id={'Baja'}
+                        />
+                        <NavSelector
+                            _href={'#!'}
+                            onclick={() => this.handleSelected('Media')}
+                            text={'P. MEDIA'}
+                            classname={"text-light m-3"}
+                            _id={'Media'}
+                        />
+                        <NavSelector
+                            _href={'#!'}
+                            onclick={() => this.handleSelected('Alta')}
+                            text={'P. ALTA'}
+                            classname={"text-light m-3"}
+                            _id={'Alta'}
+                        />
+                        {this.state.stored.length && <NavSelector
+                            _href={'#!'}
+                            onclick={() => this.handleSelected('Todas')}
+                            text={'TODAS'}
+                            classname={"todos text-dark badge-nav m-3"}
+                            _id={'todos'}
+                        />}
                     </div>
                     <h6 id="hora" className="text-light">{fecha}</h6>
                 </nav>
 
-                <div className="d-flex">
-                    <div className="badge badge-pill badge-warning m-2 d-flex justify-content-center">
-                        <span className="h4 mb-0 ml-3">Pendientes</span>
-                        <span className="badge badge-pill badge-light ml-1 d-flex align-self-baseline">
-              {this.state.todos.length}
-            </span>
+                <div className="d-flex justify-content-between">
+                    <div className="badge-warning m-2 d-flex justify-content-center p-1 rounded">
+                        <span className="h4 mb-0 ml-3 mr-3">Pendientes</span>
+                        {this.state.stored.length > 0 &&
+                        <span className="badge badge-pill badge-light m-1 d-flex align-self-baseline">
+                            {this.state.stored.length}
+                        </span>}
+                    </div>
+                    <div>
+                        <button type="button"
+                                className="btn btn-primary text-white m-2 d-flex justify-content-center h4 mb-0 ml-3"
+                                data-toggle="modal"
+                                data-target="#exampleModal3">
+                            CREAR ALERTA
+                        </button>
                     </div>
                 </div>
 
@@ -143,11 +225,11 @@ export default class App extends Component {
 
                         <div className="col-md-4 text-center">
                             <img src={logo} className="App-logo" alt="logo"/>
-                            <TodoForm onAddTodo={this.handleAddTodo}></TodoForm>
+                            <TodoForm onAddTodo={this.handleAddTodo}/>
                         </div>
 
-                        <div className="col-md-8">
-                            <div className="row">
+                        <div className="col-12">
+                            <div className="row pb-5">
                                 {todose}
                             </div>
                         </div>
