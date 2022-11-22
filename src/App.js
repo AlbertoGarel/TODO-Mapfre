@@ -45,7 +45,7 @@ export default class App extends Component {
     constructor(props) {
         super();
         this.state = {
-            stored: JSON.parse(localStorage.getItem('@tareas-mapfreapp')),
+            stored: JSON.parse(localStorage.getItem('@tareas-mapfreapp')) || [],
             todos: [],
             fecha
         }
@@ -108,7 +108,6 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        console.log((date.getDay() ))
         if (!this.state.stored) {
             localStorage.setItem('@tareas-mapfreapp', JSON.stringify([]));
         } else {
@@ -171,28 +170,28 @@ export default class App extends Component {
                     <img src={logo} className="App-logo image-fluid float-left" alt="logo"/>
                     <div className="med-screen">
                         <NavSelector
-                            _href={'#!'}
+                            _href={''}
                             onclick={() => this.handleSelected('Baja')}
                             text={'P. BAJA'}
                             classname={"text-light m-3"}
                             _id={'Baja'}
                         />
                         <NavSelector
-                            _href={'#!'}
+                            _href={''}
                             onclick={() => this.handleSelected('Media')}
                             text={'P. MEDIA'}
                             classname={"text-light m-3"}
                             _id={'Media'}
                         />
                         <NavSelector
-                            _href={'#!'}
+                            _href={''}
                             onclick={() => this.handleSelected('Alta')}
                             text={'P. ALTA'}
                             classname={"text-light m-3"}
                             _id={'Alta'}
                         />
                         {this.state.stored.length && <NavSelector
-                            _href={'#!'}
+                            _href={''}
                             onclick={() => this.handleSelected('Todas')}
                             text={'TODAS'}
                             classname={"todos text-dark badge-nav m-3"}
