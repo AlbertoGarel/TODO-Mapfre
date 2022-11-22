@@ -10,9 +10,10 @@ class NavSelector extends Component {
     render(){
 
         return(
-            <a id={this.props._id} href={this.props._href} onClick={this.props.onclick} className={this.props.classname}>
+            <button type="button" id={this.props._id} onClick={this.props.onclick}
+                    className={['btn btn-light  ', this.props.classname]}>
                 {this.props.text}
-            </a>
+            </button>
         )
     }
 
