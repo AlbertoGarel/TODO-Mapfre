@@ -108,12 +108,12 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        if (!this.state.stored) {
-            localStorage.setItem('@tareas-mapfreapp', JSON.stringify([]));
-        } else {
+        if (this.state.stored.length) {
             this.setState({
                 todos: [...this.state.stored]
             })
+        } else {
+            localStorage.setItem('@tareas-mapfreapp', JSON.stringify([]));
         }
     }
 
